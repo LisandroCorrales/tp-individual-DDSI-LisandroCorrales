@@ -15,25 +15,25 @@ import java.time.LocalDateTime;
 public class RegistroClimaService implements IRegistroClimaService {
     private static final Logger log = LoggerFactory.getLogger(RegistroClimaService.class);
 
-    @Autowired
-    private WeatherApiClient weatherApiClient;
+    private final WeatherApiClient weatherApiClient;
+    private final RegistroClimaRepository registroClimaRepository;
 
-    @Autowired
-    private RegistroClimaRepository registroClimaRepository;
+    public RegistroClimaService(WeatherApiClient weatherApiClient,
+                                RegistroClimaRepository registroClimaRepository) {
+        this.weatherApiClient = weatherApiClient;
+        this.registroClimaRepository = registroClimaRepository;
+    }
 
     @Scheduled(fixedRate = 300000, initialDelay = 1000) // Cada 5 minutos
     public RegistroClima obtenerYGuardarClima() {
         log.info("Iniciando tarea programada: Obtener y guardar clima actual de la API...");
         try {
-            // 1. Llamada real que devuelve el DTO estructurado
             WeatherResponseDto dto = weatherApiClient.obtenerClimaActual();
 
             if (dto == null) return null;
 
-            // 2. Mapeo de DTO de entrada -> Entidad de Dominio
             RegistroClima clima = convertirAEntidad(dto);
 
-            // 3. Persistencia en memoria
             RegistroClima guardado = registroClimaRepository.save(clima);
             log.info("Registro de clima real guardado con éxito. ID: {}", guardado.getId());
             return guardado;
@@ -44,7 +44,6 @@ public class RegistroClimaService implements IRegistroClimaService {
         }
     }
 
-    // Función pura de conversión
     private RegistroClima convertirAEntidad(WeatherResponseDto dto) {
         String ubicacion = dto.getLocation().getName();
         Double temperatura = dto.getCurrent().getTemp_c();

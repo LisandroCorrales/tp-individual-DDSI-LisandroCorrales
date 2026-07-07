@@ -23,11 +23,11 @@ public class WeatherApiClient {
 
     public WeatherResponseDto obtenerClimaActual() {
         try {
-            // Construye la URL real: http://api.weatherapi.com/v1/current.json?key=TU_KEY&q=CABA
+            // construye la URL real: http://api.weatherapi.com/v1/current.json?key=TU_KEY&q=CABA
             String url = String.format("%s?key=%s&q=%s", apiUrl, apiKey, location);
             log.info("Llamando a WeatherAPI (Real): {}", url.replace(apiKey, "******"));
 
-            // Consumimos la API y Jackson se encarga de transformarlo en tu DTO automáticamente
+            // consumo la API y Jackson se encarga de transformarlo en  DTO
             return restTemplate.getForObject(url, WeatherResponseDto.class);
 
         } catch (Exception e) {

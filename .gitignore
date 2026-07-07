@@ -29,3 +29,5 @@ target/**
 # IJ files
 *.iml
 .idea/**
+
+application.properties

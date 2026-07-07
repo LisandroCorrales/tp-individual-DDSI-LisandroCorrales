@@ -21,7 +21,7 @@ public class ProcesamientoAlertasService implements IProcesamientoAlertasService
     private Double temperaturaCritica;
 
     @Value("${climalert.alertas.humedad-critica}")
-    private Double humidityCritica;
+    private Double humedadCritica;
 
     private final RegistroClimaRepository registroClimaRepository;
     private final AlertaRepository alertaRepository;
@@ -40,8 +40,8 @@ public class ProcesamientoAlertasService implements IProcesamientoAlertasService
     public Alerta procesarAlertas() {
         RegistroClima ultimoClima = registroClimaRepository.findFirstByOrderByFechaHoraDesc();
 
-        if (ultimoClima == null || !ultimoClima.esClimaCritico(temperaturaCritica, humidityCritica)) {
-            return null;
+        if (ultimoClima == null || !ultimoClima.esClimaCritico(temperaturaCritica, humedadCritica)) {
+            return null; //si no es critico termina
         }
 
         if (alertaRepository.existsByRegistroDisparadorId(ultimoClima.getId())) {

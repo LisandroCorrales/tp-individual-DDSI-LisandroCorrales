@@ -20,7 +20,7 @@ public class EmailNotificador implements Notificador {
     @Autowired(required = false)
     private JavaMailSender mailSender;
 
-    @Value("${climalert.email.enabled:false}")
+    @Value("${climalert.email.enabled}")
     private boolean emailEnabled;
 
     private final List<String> destinatarios;
