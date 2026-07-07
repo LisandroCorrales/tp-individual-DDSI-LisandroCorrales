@@ -1,0 +1,35 @@
+@startuml
+
+class RegistroClima {
+    - id : Long
+    - ubicacion : String
+    - temperatura : Double
+    - humedad : Double
+    - fechaHora : LocalDateTime
+    + superaUmbrales(umbralTemp : Double, umbralHum : Double) : boolean
+}
+
+class Alerta {
+    - id : Long
+    - registroDisparador : RegistroClima
+    - fechaHora : LocalDateTime
+    - notificada : boolean
+    + marcarComoNotificada() : void
+}
+
+interface Notificador {
+    + enviarAlerta(alerta : Alerta) : void
+}
+
+class EmailNotificador {
+    - mailSender : JavaMailSender
+    - destinatarios : String[]
+    + enviarAlerta(alerta : Alerta) : void
+}
+
+' Relaciones
+Alerta "1" --> "1" RegistroClima : registroDisparador
+EmailNotificador ..|> Notificador : implementa
+Notificador ..> Alerta : usa
+
+@enduml
