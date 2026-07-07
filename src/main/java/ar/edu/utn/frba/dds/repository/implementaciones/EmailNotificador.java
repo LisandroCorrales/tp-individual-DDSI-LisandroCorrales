@@ -1,14 +1,18 @@
-package ar.edu.utn.frba.dds.models.entities;
+package ar.edu.utn.frba.dds.repository.implementaciones;
 
+import ar.edu.utn.frba.dds.models.entities.Alerta;
+import ar.edu.utn.frba.dds.models.entities.Notificador;
+import ar.edu.utn.frba.dds.models.entities.RegistroClima;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class EmailNotificador implements Notificador {
 
     private static final Logger log = LoggerFactory.getLogger(EmailNotificador.class);
@@ -19,11 +23,15 @@ public class EmailNotificador implements Notificador {
     @Value("${climalert.email.enabled:false}")
     private boolean emailEnabled;
 
-    private final String[] destinatarios = {
-        "admin@clima.com",
-        "emergencias@clima.com",
-        "meteorologia@clima.com"
-    };
+    private final List<String> destinatarios;
+
+    public EmailNotificador(
+        JavaMailSender mailSender,
+        @Value("${climalert.notificaciones.destinatarios}") List<String> destinatarios
+    ) {
+        this.mailSender = mailSender;
+        this.destinatarios = destinatarios;
+    }
 
     @Override
     public void enviarAlerta(Alerta alerta) {
@@ -58,7 +66,7 @@ public class EmailNotificador implements Notificador {
             }
             
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(destinatarios);
+            message.setTo(destinatarios.toArray(new String[0]));
             message.setSubject(asunto);
             message.setText(cuerpo);
             

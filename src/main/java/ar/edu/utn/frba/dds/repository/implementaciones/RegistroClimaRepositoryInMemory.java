@@ -20,6 +20,7 @@ public class RegistroClimaRepositoryInMemory implements RegistroClimaRepository 
 
   @Override
   public RegistroClima save(RegistroClima registroClima) {
+    registroClima.setId((long) (registrosClima.size() + 1));
     registrosClima.add(registroClima);
     return registroClima;
   }

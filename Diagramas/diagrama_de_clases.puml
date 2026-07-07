@@ -21,15 +21,9 @@ interface Notificador {
     + enviarAlerta(alerta : Alerta) : void
 }
 
-class EmailNotificador {
-    - mailSender : JavaMailSender
-    - destinatarios : String[]
-    + enviarAlerta(alerta : Alerta) : void
-}
 
 ' Relaciones
 Alerta "1" --> "1" RegistroClima : registroDisparador
-EmailNotificador ..|> Notificador : implementa
 Notificador ..> Alerta : usa
 
 @enduml

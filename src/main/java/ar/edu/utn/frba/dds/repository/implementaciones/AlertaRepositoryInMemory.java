@@ -19,7 +19,6 @@ public class AlertaRepositoryInMemory implements AlertaRepository {
 
   @Override
   public Alerta save(Alerta alerta) {
-    // Asignar ID autoincremental de mentira
     alerta.setId((long) (alertasGeneradas.size() + 1));
     alertasGeneradas.add(alerta);
     return alerta;

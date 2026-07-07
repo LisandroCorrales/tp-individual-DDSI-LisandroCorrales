@@ -16,7 +16,7 @@ public class RegistroClima {
         this.ubicacion = ubicacion;
         this.temperatura = temperatura;
         this.humedad = humedad;
-        this.fechaHora = LocalDateTime.now();
+        this.fechaHora = fechaHora;
     }
 
     public boolean esClimaCritico(Double limiteTemperatura, Double limiteHumedad) {
